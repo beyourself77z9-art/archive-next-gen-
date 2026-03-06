@@ -26,10 +26,6 @@ text-align:center;
 backdrop-filter:blur(10px);
 }
 
-h2{
-margin-bottom:20px;
-}
-
 input{
 width:90%;
 padding:15px;
@@ -67,11 +63,11 @@ transform:scale(1.08);
 
 <p>ما الكلمة التي تصف جيلك؟</p>
 
-<input id="answer" type="text" placeholder="اكتب إجابتك هنا">
+<input id="answer" placeholder="اكتب إجابتك هنا">
 
 <br>
 
-<button onclick="finishGame()">إنهاء</button>
+<button id="finishBtn">إنهاء</button>
 
 </div>
 
@@ -86,13 +82,13 @@ authDomain: "archive-next-generation.firebaseapp.com",
 projectId: "archive-next-generation",
 storageBucket: "archive-next-generation.firebasestorage.app",
 messagingSenderId: "866271856728",
-appId: "1:866271856728:web:c80ce1e5675bc77104222d"
+appId: "1:866271856728:web:c80ce1e5675bc77104222c"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.finishGame = async function(){
+document.getElementById("finishBtn").addEventListener("click", async function(){
 
 let gameAnswer=document.getElementById("answer").value;
 
@@ -101,14 +97,20 @@ alert("اكتب إجابتك أولًا 🤍");
 return;
 }
 
+try{
+
 await addDoc(collection(db,"archive_participants"),{
 gameAnswer:gameAnswer,
 time:new Date().toISOString()
 });
 
+}catch(e){
+console.log(e);
+}
+
 window.location.href="thanks.html";
 
-}
+});
 
 </script>
 
