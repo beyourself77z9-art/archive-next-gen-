@@ -22,10 +22,6 @@ border-radius:20px;
 box-shadow:0 0 15px rgba(0,0,0,0.1);
 }
 
-h1{
-color:#0d5c3b;
-}
-
 .question{
 margin-top:25px;
 text-align:right;
@@ -38,17 +34,19 @@ margin-top:10px;
 font-size:16px;
 border-radius:8px;
 border:1px solid #ccc;
+box-sizing:border-box;
 }
 
 button{
 margin-top:30px;
-padding:15px 50px;
+padding:15px;
 font-size:20px;
 background:#0d5c3b;
 color:white;
 border:none;
 border-radius:12px;
 cursor:pointer;
+width:100%;
 }
 
 </style>
@@ -85,32 +83,54 @@ cursor:pointer;
 <input id="q5">
 </div>
 
-<button onclick="nextPage()">التالي</button>
+<button onclick="saveAll()">التالي</button>
 
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
 
-function nextPage(){
+const firebaseConfig = {
+apiKey: "AIzaSyDIbGhX_vXkQJxDC4zaVxKkPs-10",
+authDomain: "archive-next-gen.firebaseapp.com",
+projectId: "archive-next-gen",
+storageBucket: "archive-next-gen.firebasestorage.app",
+messagingSenderId: "973345848752",
+appId: "1:973345848752:web:02a6bc4cef2c14e415ea75"
+};
 
-let q1=document.getElementById("q1").value;
-let q2=document.getElementById("q2").value;
-let q3=document.getElementById("q3").value;
-let q4=document.getElementById("q4").value;
-let q5=document.getElementById("q5").value;
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-if(q1==="" || q2==="" || q3==="" || q4==="" || q5===""){
+function saveAll(){
+
+let q1=document.getElementById("q1").value.trim();
+let q2=document.getElementById("q2").value.trim();
+let q3=document.getElementById("q3").value.trim();
+let q4=document.getElementById("q4").value.trim();
+let q5=document.getElementById("q5").value.trim();
+
+if(!q1 || !q2 || !q3 || !q4 || !q5){
 alert("الرجاء الإجابة على جميع الأسئلة");
 return;
 }
 
-localStorage.setItem("q1",q1);
-localStorage.setItem("q2",q2);
-localStorage.setItem("q3",q3);
-localStorage.setItem("q4",q4);
-localStorage.setItem("q5",q5);
+// حفظ في Firebase
+db.collection("archive_participants").add({
+q1:q1,
+q2:q2,
+q3:q3,
+q4:q4,
+q5:q5,
+time:new Date().toISOString()
+}).then(()=>{
 
 window.location.href="game.html";
+
+});
 
 }
 
