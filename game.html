@@ -41,6 +41,11 @@ color:white;
 margin-bottom:20px;
 }
 
+#finishGameBtn{
+display:none;
+background:#3b82f6;
+}
+
 </style>
 </head>
 
@@ -53,6 +58,8 @@ margin-bottom:20px;
 <div id="progress"></div>
 <div id="question"></div>
 <div id="options"></div>
+
+<button id="finishGameBtn">الانتقال إلى الشكر</button>
 
 </div>
 
@@ -94,10 +101,28 @@ options:["طموح","مبدع","متجدد"]
 
 let index=0;
 
+async function saveAnswer(answer){
+
+await addDoc(collection(db,"archive_participants"),{
+question:questions[index].q,
+answer:answer,
+time:new Date().toISOString()
+});
+
+}
+
 function showQuestion(){
 
 if(index>=questions.length){
-window.location.href="thanks.html";
+
+document.getElementById("question").innerText="أنهيت الرحلة 🎉";
+
+document.getElementById("options").innerHTML="";
+
+document.getElementById("finishGameBtn").style.display="block";
+
+document.getElementById("progress").innerText="";
+
 return;
 }
 
@@ -116,16 +141,9 @@ let btn=document.createElement("button");
 btn.innerText=opt;
 
 btn.onclick=async function(){
-
-await addDoc(collection(db,"archive_participants"),{
-question:questions[index].q,
-answer:opt,
-time:new Date().toISOString()
-});
-
+await saveAnswer(opt);
 index++;
 showQuestion();
-
 };
 
 optionsDiv.appendChild(btn);
@@ -133,6 +151,11 @@ optionsDiv.appendChild(btn);
 });
 
 }
+
+document.getElementById("finishGameBtn")
+.addEventListener("click",function(){
+window.location.href="thanks.html";
+});
 
 showQuestion();
 
