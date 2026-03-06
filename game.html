@@ -152,12 +152,11 @@ optionsDiv.appendChild(btn);
 
 }
 
-document.getElementById("finishGameBtn")
-.addEventListener("click",function(){
+document.getElementById("finishGameBtn").onclick=function(){
 window.location.href="thanks.html";
-});
+};
 
-showQuestion();
+window.onload=showQuestion;
 
 </script>
 
