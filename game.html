@@ -73,7 +73,7 @@ authDomain: "archive-next-generation.firebaseapp.com",
 projectId: "archive-next-generation",
 storageBucket: "archive-next-generation.firebasestorage.app",
 messagingSenderId: "866271856728",
-appId: "1:866271856728:web:c80ce1e5675bc77104222d"
+appId: "1:973345848752:web:02a6bc4cef2c14e415ea75"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -112,13 +112,13 @@ time:new Date().toISOString()
 
 function showQuestion(){
 
-if(index>=questions.length){
+if(index >= questions.length){
 window.location.href="thanks.html";
 return;
 }
 
 document.getElementById("progress")
-.innerText=`السؤال ${index+1} / 4`;
+.innerText=`السؤال ${index+1} / ${questions.length}`;
 
 document.getElementById("question")
 .innerText=questions[index].q;
