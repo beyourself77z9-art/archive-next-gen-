@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>المعلومات</title>
+
+<style>
+body{
+font-family:Arial;
+text-align:center;
+margin:0;
+padding:40px;
+background-image:url("infobgpng.jpeg");
+background-size:cover;
+}
+
+.container{
+background:white;
+padding:40px;
+max-width:600px;
+margin:auto;
+border-radius:20px;
+}
+
+input{
+width:80%;
+padding:12px;
+margin:12px;
+font-size:16px;
+}
+
+button{
+margin-top:25px;
+padding:15px 50px;
+background:#0d5c3b;
+color:white;
+border:none;
+border-radius:12px;
+font-size:20px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>أدخل معلوماتك</h1>
+
+<input id="name" placeholder="الاسم">
+<input id="age" type="number" placeholder="العمر">
+<input id="city" placeholder="المدينة">
+
+<br>
+
+<button onclick="checkInfo()">
+التالي
+</button>
+
+</div>
+
+<script type="module">
+import { saveParticipant } from "./firebase.js";
+
+window.checkInfo = async function(){
+
+let name=document.getElementById("name").value;
+let age=document.getElementById("age").value;
+let city=document.getElementById("city").value;
+
+if(name=="" || age=="" || city==""){
+alert("الرجاء تعبئة المعلومات 🤍");
+return;
+}
+
+await saveParticipant({
+name:name,
+age:age,
+city:city
+});
+
+location.href="thanks.html";
+
+}
+</script>
+
+</body>
+</html>
