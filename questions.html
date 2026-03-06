@@ -27,7 +27,7 @@ color:#0d5c3b;
 }
 
 .question{
-margin-top:30px;
+margin-top:25px;
 text-align:right;
 }
 
@@ -58,7 +58,7 @@ cursor:pointer;
 
 <div class="container">
 
-<h1>أسئلة أرشيف الجيل القادم</h1>
+<h1>أسئلة الجيل القادم</h1>
 
 <div class="question">
 <p>ما القضية التي تؤمن أنها ستغير مستقبل الجيل القادم؟</p>
@@ -85,47 +85,32 @@ cursor:pointer;
 <input id="q5">
 </div>
 
-<button onclick="sendAnswers()">
-إرسال الإجابات
-</button>
+<button onclick="nextPage()">التالي</button>
 
 </div>
 
-<script type="module">
+<script>
 
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+function nextPage(){
 
-const firebaseConfig = {
-apiKey: "AIzaSyCsFx_VBi6SSUfhXM2ozXefYN_-XLtc-Dw",
-authDomain: "archive-next-generation.firebaseapp.com",
-projectId: "archive-next-generation",
-storageBucket: "archive-next-generation.firebasestorage.app",
-messagingSenderId: "866271856728",
-appId: "1:866271856728:web:c80ce1e5675bc77104222d"
-};
+let q1=document.getElementById("q1").value;
+let q2=document.getElementById("q2").value;
+let q3=document.getElementById("q3").value;
+let q4=document.getElementById("q4").value;
+let q5=document.getElementById("q5").value;
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-window.sendAnswers = async function(){
-
-let data={
-q1:document.getElementById("q1").value,
-q2:document.getElementById("q2").value,
-q3:document.getElementById("q3").value,
-q4:document.getElementById("q4").value,
-q5:document.getElementById("q5").value
-};
-
-if(Object.values(data).includes("")){
-alert("الرجاء الإجابة على جميع الأسئلة 🤍");
+if(q1==="" || q2==="" || q3==="" || q4==="" || q5===""){
+alert("الرجاء الإجابة على جميع الأسئلة");
 return;
 }
 
-await addDoc(collection(db,"archive_participants"), data);
+localStorage.setItem("q1",q1);
+localStorage.setItem("q2",q2);
+localStorage.setItem("q3",q3);
+localStorage.setItem("q4",q4);
+localStorage.setItem("q5",q5);
 
-location.href="game.html";
+window.location.href="game.html";
 
 }
 
