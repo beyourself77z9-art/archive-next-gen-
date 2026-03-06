@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>بوابة الأرشيف</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:linear-gradient(135deg,#0d5c3b,#0b3d2e);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+margin:0;
+color:white;
+}
+
+.game-box{
+background:white;
+color:black;
+padding:50px;
+width:90%;
+max-width:600px;
+border-radius:30px;
+box-shadow:0 0 25px rgba(0,0,0,0.2);
+animation: fadeIn 1s;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+#question{
+font-size:24px;
+margin:30px 0;
+}
+
+textarea{
+width:90%;
+height:120px;
+padding:15px;
+font-size:18px;
+border-radius:15px;
+border:1px solid #ccc;
+}
+
+button{
+margin-top:25px;
+padding:15px 50px;
+font-size:20px;
+background:#0d5c3b;
+color:white;
+border:none;
+border-radius:15px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:#0b3d2e;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="game-box">
+
+<h1>🎮 بوابة الأرشيف</h1>
+
+<div id="question">
+اضغط ابدأ لبدء الرحلة
+</div>
+
+<textarea id="answer"></textarea>
+
+<br>
+
+<button onclick="startGame()">ابدأ</button>
+<button onclick="nextQuestion()">التالي</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCsFx_VBi6SSUfhXM2ozXefYN_-XLtc-Dw",
+authDomain: "archive-next-generation.firebaseapp.com",
+projectId: "archive-next-generation",
+storageBucket: "archive-next-generation.firebasestorage.app",
+messagingSenderId: "866271856728",
+appId: "1:866271856728:web:c80ce1e5675bc77104222d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let questions=[
+"كيف يمكن الحفاظ على الهوية الثقافية في المستقبل؟",
+"ما دور الشباب في تطوير الثقافة في المملكة العربية السعودية؟",
+"هل الثقافة يجب أن تكون رقمية أم مرتبطة بالتراث؟ ولماذا؟",
+"ما الفكرة التي تريد حفظها في أرشيف الجيل القادم؟"
+];
+
+let index=0;
+
+window.startGame=function(){
+document.getElementById("question").innerText=questions[index];
+}
+
+window.nextQuestion=async function(){
+
+let ans=document.getElementById("answer").value;
+
+if(ans===""){
+alert("اكتب إجابتك أولًا 🤍");
+return;
+}
+
+await addDoc(collection(db,"archive_participants"),{
+question:questions[index],
+answer:ans,
+time:new Date().toISOString()
+});
+
+index++;
+
+if(index < questions.length){
+document.getElementById("question").innerText=questions[index];
+document.getElementById("answer").value="";
+}
+else{
+window.location.href="thanks.html";
+}
+
+}
+
+</script>
+
+</body>
+</html>
