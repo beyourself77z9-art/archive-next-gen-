@@ -100,10 +100,15 @@ alert("الرجاء تعبئة جميع المعلومات");
 return;
 }
 
-db.collection("archive_participants").add({
+let userID = localStorage.getItem("userID");
+
+db.collection("archive_participants")
+.doc(userID)
+.set({
 name:name,
 age:age,
 city:city,
+answers:[],
 time:new Date().toISOString()
 }).then(()=>{
 
