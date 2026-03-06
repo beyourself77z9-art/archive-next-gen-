@@ -8,62 +8,33 @@
 
 body{
 font-family:Arial;
-background:#0f172a;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+margin:0;
 color:white;
-text-align:center;
+}
+
+.box{
+background:#1f2b3a;
 padding:40px;
-}
-
-.card{
-background:#1e293b;
-padding:30px;
 border-radius:20px;
-max-width:500px;
-margin:auto;
+text-align:center;
+width:420px;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
 }
 
-button{
-padding:10px 20px;
-border:none;
-border-radius:10px;
-background:#22c55e;
-color:white;
+h2{
+margin-bottom:10px;
+}
+
+p{
 font-size:18px;
-cursor:pointer;
+margin-bottom:20px;
 }
 
-</style>
-</head>
-
-<body>
-
-<div class="card">
-
-<h2>🎮 تحدي الأرشيف</h2>
-
-<p id="question">اضغط لبدء اللعبة</p>
-
-<button onclick="startGame()">ابدأ</button>
-
-</div>
-
-<script>
-
-let questions=[
-"ما الكلمة التي تصف جيلك؟",
-"لو كتبت رسالة للمستقبل ماذا تقول؟",
-"ما الشيء الذي يجب ألا يختفي من ثقافتنا؟"
-];
-
-function startGame(){
-
-let random=Math.floor(Math.random()*questions.length);
-
-document.getElementById("question").innerText=questions[random];
-
-}
-
-</script>
-
-</body>
-</html>
+input{
+width:90%;
+padding:
