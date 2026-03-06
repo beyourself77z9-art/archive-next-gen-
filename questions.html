@@ -2,13 +2,12 @@
 <html lang="ar">
 <head>
 
+<meta charset="UTF-8">
+<title>الأسئلة</title>
+
 <meta name="title" content="أرشيف الجيل القادم">
 <meta name="description" content="مشاركة أفكار الجيل القادم حول الثقافة والمستقبل">
 <meta name="keywords" content="أرشيف الجيل القادم">
-
-</head>
-<meta charset="UTF-8">
-<title>الأسئلة</title>
 
 <style>
 
@@ -56,6 +55,7 @@ width:100%;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -103,7 +103,7 @@ const firebaseConfig = {
 apiKey: "AIzaSyDIbGhX_vXkQJxDC4zaVxKkPs-10",
 authDomain: "archive-next-gen.firebaseapp.com",
 projectId: "archive-next-gen",
-storageBucket: "archive-next-gen.firebasestorage.app",
+storageBucket: "archive-next-gen.firebasestorage.firebasestorage.app",
 messagingSenderId: "973345848752",
 appId: "1:973345848752:web:02a6bc4cef2c14e415ea75"
 };
@@ -111,7 +111,7 @@ appId: "1:973345848752:web:02a6bc4cef2c14e415ea75"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-function saveAll(){
+function nextPage(){
 
 let q1=document.getElementById("q1").value.trim();
 let q2=document.getElementById("q2").value.trim();
@@ -129,11 +129,12 @@ let userID = localStorage.getItem("userID");
 db.collection("archive_participants")
 .doc(userID)
 .update({
-answers: firebase.firestore.FieldValue.arrayUnion({
-question:questions[index].q,
-answer:answer
-})
-});
+q1:q1,
+q2:q2,
+q3:q3,
+q4:q4,
+q5:q5
+}).then(()=>{
 
 window.location.href="game.html";
 
