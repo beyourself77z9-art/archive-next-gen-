@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>الأسئلة</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:#f4f4f4;
+padding-top:80px;
+}
+
+.container{
+background:white;
+padding:40px;
+max-width:700px;
+margin:auto;
+border-radius:20px;
+box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+h1{
+color:#0d5c3b;
+}
+
+.question{
+margin-top:30px;
+text-align:right;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+font-size:16px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+button{
+margin-top:30px;
+padding:15px 50px;
+font-size:20px;
+background:#0d5c3b;
+color:white;
+border:none;
+border-radius:12px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>أسئلة أرشيف الجيل القادم</h1>
+
+<div class="question">
+<p>ما القضية التي تؤمن أنها ستغير مستقبل الجيل القادم؟</p>
+<input id="q1">
+</div>
+
+<div class="question">
+<p>ما المهارة التي ستبني بها مستقبلك؟</p>
+<input id="q2">
+</div>
+
+<div class="question">
+<p>ما الخوف الذي يجب أن يهزمه جيلنا؟</p>
+<input id="q3">
+</div>
+
+<div class="question">
+<p>كيف ترى مستقبل الجيل القادم؟</p>
+<input id="q4">
+</div>
+
+<div class="question">
+<p>ما الرسالة التي تريد حفظها للتاريخ؟</p>
+<input id="q5">
+</div>
+
+<button onclick="sendAnswers()">
+إرسال الإجابات
+</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCsFx_VBi6SSUfhXM2ozXefYN_-XLtc-Dw",
+authDomain: "archive-next-generation.firebaseapp.com",
+projectId: "archive-next-generation",
+storageBucket: "archive-next-generation.firebasestorage.app",
+messagingSenderId: "866271856728",
+appId: "1:866271856728:web:c80ce1e5675bc77104222d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.sendAnswers = async function(){
+
+let data={
+q1:document.getElementById("q1").value,
+q2:document.getElementById("q2").value,
+q3:document.getElementById("q3").value,
+q4:document.getElementById("q4").value,
+q5:document.getElementById("q5").value
+};
+
+if(Object.values(data).includes("")){
+alert("الرجاء الإجابة على جميع الأسئلة 🤍");
+return;
+}
+
+await addDoc(collection(db,"archive_participants"), data);
+
+location.href="game.html";
+
+}
+
+</script>
+
+</body>
+</html>
