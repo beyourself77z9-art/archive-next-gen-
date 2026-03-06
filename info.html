@@ -5,40 +5,63 @@
 <title>المعلومات</title>
 
 <style>
+
 body{
 font-family:Arial;
 text-align:center;
 margin:0;
-padding:40px;
+padding:0;
 background-image:url("infobgpng.jpeg");
 background-size:cover;
+background-position:center;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
 .container{
-background:white;
+background:rgba(255,255,255,0.9);
 padding:40px;
-max-width:600px;
-margin:auto;
 border-radius:20px;
+width:90%;
+max-width:600px;
+box-shadow:0 0 20px rgba(0,0,0,0.2);
+}
+
+h1{
+color:#0d5c3b;
+margin-bottom:30px;
+}
+
+.input-box{
+margin:20px 0;
+text-align:right;
 }
 
 input{
-width:80%;
+width:100%;
 padding:12px;
-margin:12px;
 font-size:16px;
+border-radius:8px;
+border:1px solid #ccc;
 }
 
 button{
 margin-top:25px;
 padding:15px 50px;
+font-size:18px;
 background:#0d5c3b;
 color:white;
 border:none;
 border-radius:12px;
-font-size:20px;
 cursor:pointer;
 }
+
+button:hover{
+background:#0a4a30;
+}
+
 </style>
 </head>
 
@@ -48,41 +71,46 @@ cursor:pointer;
 
 <h1>أدخل معلوماتك</h1>
 
-<input id="name" placeholder="الاسم">
-<input id="age" type="number" placeholder="العمر">
-<input id="city" placeholder="المدينة">
+<div class="input-box">
+<p>الاسم</p>
+<input id="name" type="text">
+</div>
 
-<br>
+<div class="input-box">
+<p>العمر</p>
+<input id="age" type="number">
+</div>
 
-<button onclick="checkInfo()">
-التالي
-</button>
+<div class="input-box">
+<p>المدينة</p>
+<input id="city" type="text">
+</div>
+
+<button onclick="nextPage()">التالي</button>
 
 </div>
 
-<script type="module">
-import { saveParticipant } from "./firebase.js";
+<script>
 
-window.checkInfo = async function(){
+function nextPage(){
 
 let name=document.getElementById("name").value;
 let age=document.getElementById("age").value;
 let city=document.getElementById("city").value;
 
-if(name=="" || age=="" || city==""){
-alert("الرجاء تعبئة المعلومات 🤍");
+if(name==="" || age==="" || city===""){
+alert("الرجاء تعبئة جميع المعلومات");
 return;
 }
 
-await saveParticipant({
-name:name,
-age:age,
-city:city
-});
+localStorage.setItem("name",name);
+localStorage.setItem("age",age);
+localStorage.setItem("city",city);
 
-location.href="thanks.html";
+window.location.href="questions.html";
 
 }
+
 </script>
 
 </body>
