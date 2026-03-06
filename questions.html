@@ -118,15 +118,16 @@ alert("الرجاء الإجابة على جميع الأسئلة");
 return;
 }
 
-// حفظ في Firebase
-db.collection("archive_participants").add({
-q1:q1,
-q2:q2,
-q3:q3,
-q4:q4,
-q5:q5,
-time:new Date().toISOString()
-}).then(()=>{
+let userID = localStorage.getItem("userID");
+
+db.collection("archive_participants")
+.doc(userID)
+.update({
+answers: firebase.firestore.FieldValue.arrayUnion({
+question:questions[index].q,
+answer:answer
+})
+});
 
 window.location.href="game.html";
 
