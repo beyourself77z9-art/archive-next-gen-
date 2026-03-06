@@ -15,13 +15,15 @@ body{
   margin:0;
   color:white;
 }
+
 .box{
-  background:rgba(0,0,0,0.4);
+  background:rgba(0,0,0,0.5);
   padding:40px;
   border-radius:25px;
-  width:450px;
+  width:500px;
   text-align:center;
 }
+
 button{
   width:100%;
   padding:12px;
@@ -34,9 +36,11 @@ button{
   color:white;
   transition:0.3s;
 }
+
 button:hover{
   transform:scale(1.05);
 }
+
 #progress{
   margin-bottom:20px;
 }
@@ -47,124 +51,158 @@ button:hover{
 
 <div class="box">
 <h2>🎮 رحلة الأرشيف</h2>
+
 <div id="progress"></div>
 <div id="question"></div>
 <div id="options"></div>
 </div>
 
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-// إعداد Firebase
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCsFx_VBi6SSUfhXM2ozXefYN_-XLtc-Dw",
-  authDomain: "archive-next-generation.firebaseapp.com",
-  projectId: "archive-next-generation",
-  storageBucket: "archive-next-generation.firebasestorage.app",
-  messagingSenderId: "866271856728",
-  appId: "1:866271856728:web:02a6bc4cef2c14e415ea75"
+apiKey:"AIzaSyCsFx_VBi6SSUfhXM2ozXkXpVs-10",
+authDomain:"archive-next-gen.firebaseapp.com",
+projectId:"archive-next-gen",
+storageBucket:"archive-next-gen.firebasestorage.firebasestorage.app",
+messagingSenderId:"973345848752",
+appId:"1:973345848752:web:02a6bc4cef2c14e415ea75"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// معرف المستخدم الفريد
+/* معرف المستخدم */
 let userID = localStorage.getItem("userID");
 if(!userID){
-  userID = Date.now().toString();
-  localStorage.setItem("userID", userID);
+userID = Date.now().toString();
+localStorage.setItem("userID", userID);
 }
 
-// الأسئلة
+/* الأسئلة */
 let questions=[
-  {q:"كيف تحب أن تكون الثقافة في المستقبل؟", options:["رقمية","تراثية","متوازنة"]},
-  {q:"ما دور الشباب في الثقافة؟", options:["الابتكار","الحفاظ على التراث","نشر المعرفة"]},
-  {q:"ما أهم شيء للجيل القادم؟", options:["التعليم","الهوية الثقافية","التقنية"]},
-  {q:"اختر كلمة تصف جيلك", options:["طموح","مبدع","متجدد"]}
+{q:"كيف تحب أن تكون الثقافة في المستقبل؟", options:["رقمية","تراثية","متوازنة"]},
+{q:"ما دور الشباب في الثقافة؟", options:["الابتكار","الحفاظ على التراث","نشر المعرفة"]},
+{q:"ما أهم شيء للجيل القادم؟", options:["التعليم","الهوية الثقافية","التقنية"]},
+{q:"اختر كلمة تصف جيلك", options:["طموح","مبدع","متجدد"]}
 ];
 
 let index=0;
 
-// نقاط لكل نوع إجابة
 let scoreInnovation=0;
 let scoreHeritage=0;
 let scoreTech=0;
 
-// حفظ الإجابة وحساب النقاط
+/* حفظ الإجابة */
 function saveAnswer(answer){
-  // حساب النقاط
-  if(answer==="الابتكار" || answer==="طموح" || answer==="مبدع") scoreInnovation++;
-  if(answer==="تراثية" || answer==="الحفاظ على التراث") scoreHeritage++;
-  if(answer==="رقمية") scoreTech++;
 
-  // حفظ الإجابة في Firebase
-  db.collection("archive_participants").doc(userID).set({
-    answers: firebase.firestore.FieldValue.arrayUnion({
-      question: questions[index].q,
-      answer: answer,
-      time: new Date().toISOString()
-    }),
-    scores:{
-      innovation: scoreInnovation,
-      heritage: scoreHeritage,
-      tech: scoreTech
-    }
-  }, { merge: true });
+if(answer==="الابتكار" || answer==="طموح" || answer==="مبدع") scoreInnovation++;
+if(answer==="تراثية" || answer==="الحفاظ على التراث") scoreHeritage++;
+if(answer==="رقمية") scoreTech++;
+
+db.collection("archive_participants")
+.doc(userID)
+.set({
+answers:firebase.firestore.FieldValue.arrayUnion({
+question:questions[index].q,
+answer:answer
+}),
+scores:{
+innovation:scoreInnovation,
+heritage:scoreHeritage,
+tech:scoreTech
+},
+time:new Date().toISOString()
+},{merge:true});
+
 }
 
-// وصف الشخص بناء على النقاط
+/* توصيف الشخصية */
 function getDescription(){
-  if(scoreInnovation >= scoreHeritage && scoreInnovation >= scoreTech){
-    return "أنت مبدع ومبتكر، دائمًا تبحث عن طرق جديدة للتعبير عن الثقافة.";
-  }
-  if(scoreHeritage >= scoreInnovation && scoreHeritage >= scoreTech){
-    return "أنت محافظ على التراث، تهتم بالحفاظ على هوية الجيل والموروث الثقافي.";
-  }
-  if(scoreTech >= scoreInnovation && scoreTech >= scoreHeritage){
-    return "أنت رقمي ومهتم بالتقنيات الحديثة، تواكب المستقبل بخطوات سريعة.";
-  }
-  return "أنت متوازن بين الابتكار والتراث والتقنية، تعرف كيف تدمج الماضي والحاضر والمستقبل.";
+
+if(scoreInnovation>=2)
+return "أنت مبتكر ومفكر مستقبلي!";
+
+if(scoreHeritage>=2)
+return "أنت حافظ للتراث ومهتم بالثقافة!";
+
+if(scoreTech>=2)
+return "أنت متقدم تقني ومحب للتجربة الرقمية!";
+
+return "أنت متوازن بين الماضي والحاضر والمستقبل!";
 }
 
-// عرض الأسئلة
+/* عرض النتيجة */
+function showResult(){
+
+let description=getDescription();
+
+localStorage.setItem("archive_description",description);
+
+document.getElementById("progress").innerText="";
+document.getElementById("question").innerHTML="<h3>🎉 انتهت الرحلة!</h3><p>"+description+"</p>";
+
+document.getElementById("options").innerHTML=`
+<button onclick="sharePage()">📤 مشاركة الموقع</button>
+`;
+
+setTimeout(()=>{
+window.location.href="thanks.html";
+},2000);
+
+}
+
+/* عرض الأسئلة */
 function showQuestion(){
-  if(index>=questions.length){
-    // عرض وصف الشخصية قبل الانتقال
-    let description = getDescription();
-    document.body.innerHTML = `
-      <div class="box">
-        <h2>🎉 انتهت الرحلة!</h2>
-        <p>${description}</p>
-        <button onclick="goToThanks()">التالي</button>
-      </div>
-    `;
-    return;
-  }
 
-  document.getElementById("progress").innerText = `السؤال ${index+1} / ${questions.length}`;
-  document.getElementById("question").innerText = questions[index].q;
-
-  let optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
-
-  questions[index].options.forEach(opt=>{
-    let btn = document.createElement("button");
-    btn.innerText = opt;
-    btn.onclick = function(){
-      saveAnswer(opt);
-      index++;
-      showQuestion();
-    };
-    optionsDiv.appendChild(btn);
-  });
+if(index>=questions.length){
+showResult();
+return;
 }
 
-function goToThanks(){
-  window.location.href = "thanks.html";
+document.getElementById("progress").innerText=`السؤال ${index+1} / ${questions.length}`;
+document.getElementById("question").innerText=questions[index].q;
+
+let optionsDiv=document.getElementById("options");
+optionsDiv.innerHTML="";
+
+questions[index].options.forEach(opt=>{
+let btn=document.createElement("button");
+btn.innerText=opt;
+
+btn.onclick=function(){
+saveAnswer(opt);
+index++;
+showQuestion();
+};
+
+optionsDiv.appendChild(btn);
+});
+
 }
 
-window.onload = showQuestion;
+/* مشاركة الموقع */
+function sharePage(){
+
+if(navigator.share){
+navigator.share({
+title:"أرشيف الجيل القادم",
+text:"جرب رحلة الأرشيف!",
+url:window.location.href
+});
+}else{
+navigator.clipboard.writeText(window.location.href);
+alert("تم نسخ الرابط 👍");
+}
+
+}
+
+/* تشغيل اللعبة */
+window.addEventListener("DOMContentLoaded",showQuestion);
+
 </script>
 
 </body>
