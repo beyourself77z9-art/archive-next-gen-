@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>رحلة الأرشيف</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:linear-gradient(135deg,#0f172a,#1e293b,#0d5c3b);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+color:white;
+}
+
+.box{
+background:rgba(0,0,0,0.4);
+padding:40px;
+border-radius:25px;
+width:450px;
+text-align:center;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+font-size:18px;
+cursor:pointer;
+background:#22c55e;
+color:white;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+#progress{
+margin-bottom:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>🎮 رحلة الأرشيف</h2>
+
+<div id="progress"></div>
+<div id="question"></div>
+<div id="options"></div>
+
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+
+const firebaseConfig = {
+apiKey: "AIzaSyCsFx_VBi6SSUfhXM2ozXefYN_-XLtc-Dw",
+authDomain: "archive-next-generation.firebaseapp.com",
+projectId: "archive-next-generation",
+storageBucket: "archive-next-generation.firebasestorage.app",
+messagingSenderId: "866271856728",
+appId: "1:866271856728:web:c80ce1e5675bc77104222d"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let questions=[
+{
+q:"كيف تحب أن تكون الثقافة في المستقبل؟",
+options:["رقمية","تراثية","متوازنة"]
+},
+{
+q:"ما دور الشباب في الثقافة؟",
+options:["الابتكار","الحفاظ على التراث","نشر المعرفة"]
+},
+{
+q:"ما أهم شيء للجيل القادم؟",
+options:["التعليم","الهوية الثقافية","التقنية"]
+},
+{
+q:"اختر كلمة تصف جيلك",
+options:["طموح","مبدع","متجدد"]
+}
+];
+
+let index=0;
+
+function saveAnswer(answer){
+
+db.collection("archive_participants").add({
+question:questions[index].q,
+answer:answer,
+time:new Date().toISOString()
+});
+
+}
+
+function showQuestion(){
+
+if(index>=questions.length){
+window.location.href="thanks.html";
+return;
+}
+
+document.getElementById("progress")
+.innerText=`السؤال ${index+1} / 4`;
+
+document.getElementById("question")
+.innerText=questions[index].q;
+
+let optionsDiv=document.getElementById("options");
+optionsDiv.innerHTML="";
+
+questions[index].options.forEach(opt=>{
+
+let btn=document.createElement("button");
+btn.innerText=opt;
+
+btn.onclick=function(){
+saveAnswer(opt);
+index++;
+showQuestion();
+};
+
+optionsDiv.appendChild(btn);
+
+});
+
+}
+
+window.onload=showQuestion;
+
+</script>
+
+</body>
+</html>
