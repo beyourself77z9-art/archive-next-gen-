@@ -10,7 +10,6 @@ body{
 font-family:Arial;
 text-align:center;
 margin:0;
-padding:0;
 background-image:url("infobgpng.jpeg");
 background-size:cover;
 background-position:center;
@@ -29,37 +28,25 @@ max-width:600px;
 box-shadow:0 0 20px rgba(0,0,0,0.2);
 }
 
-h1{
-color:#0d5c3b;
-margin-bottom:30px;
-}
-
-.input-box{
-margin:20px 0;
-text-align:right;
-}
-
 input{
 width:100%;
 padding:12px;
-font-size:16px;
+margin-top:8px;
 border-radius:8px;
 border:1px solid #ccc;
+box-sizing:border-box;
 }
 
 button{
 margin-top:25px;
-padding:15px 50px;
+padding:15px;
 font-size:18px;
 background:#0d5c3b;
 color:white;
 border:none;
 border-radius:12px;
 cursor:pointer;
-}
-
-button:hover{
-background:#0a4a30;
+width:100%;
 }
 
 </style>
@@ -71,43 +58,58 @@ background:#0a4a30;
 
 <h1>أدخل معلوماتك</h1>
 
-<div class="input-box">
 <p>الاسم</p>
-<input id="name" type="text">
-</div>
+<input id="name">
 
-<div class="input-box">
 <p>العمر</p>
 <input id="age" type="number">
-</div>
 
-<div class="input-box">
 <p>المدينة</p>
-<input id="city" type="text">
+<input id="city">
+
+<button onclick="saveData()">التالي</button>
+
 </div>
 
-<button onclick="nextPage()">التالي</button>
-
-</div>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
 
-function nextPage(){
+const firebaseConfig = {
+apiKey: "AIzaSyDIbGh7_Hjvp38QJxDC4zaVxKkXpVs-10",
+authDomain: "archive-next-gen.firebaseapp.com",
+projectId: "archive-next-gen",
+storageBucket: "archive-next-gen.firebasestorage.app",
+messagingSenderId: "973345848752",
+appId: "1:973345848752:web:02a6bc4cef2c14e415ea75"
+};
 
-let name=document.getElementById("name").value;
-let age=document.getElementById("age").value;
-let city=document.getElementById("city").value;
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-if(name==="" || age==="" || city===""){
+function saveData(){
+
+let name=document.getElementById("name").value.trim();
+let age=document.getElementById("age").value.trim();
+let city=document.getElementById("city").value.trim();
+
+if(!name || !age || !city){
 alert("الرجاء تعبئة جميع المعلومات");
 return;
 }
 
-localStorage.setItem("name",name);
-localStorage.setItem("age",age);
-localStorage.setItem("city",city);
+db.collection("archive_participants").add({
+name:name,
+age:age,
+city:city,
+time:new Date().toISOString()
+}).then(()=>{
 
 window.location.href="questions.html";
+
+});
 
 }
 
