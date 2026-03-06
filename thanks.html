@@ -1,8 +1,16 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
+
 <meta charset="UTF-8">
 <title>أرشيف الجيل القادم</title>
+
+<meta name="title" content="أرشيف الجيل القادم">
+<meta name="description" content="شكرًا لمشاركتك في أرشيف الجيل القادم وتوثيق أفكار الجيل القادم حول مستقبل الثقافة في السعودية">
+<meta name="keywords" content="أرشيف الجيل القادم, الثقافة, الجيل القادم, السعودية">
+<meta name="author" content="Archive Next Generation">
+<meta name="robots" content="index, follow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
@@ -65,6 +73,7 @@ transform:scale(1.1);
 }
 
 </style>
+
 </head>
 
 <body>
@@ -85,7 +94,6 @@ transform:scale(1.1);
 <div class="buttons">
 
 <button class="share" onclick="sharePage()">📤 مشاركة</button>
-
 <button class="home" onclick="goHome()">🔁 العودة للبداية</button>
 
 </div>
@@ -94,6 +102,7 @@ transform:scale(1.1);
 
 <script>
 
+// مشاركة الموقع
 function sharePage(){
 
 if(navigator.share){
@@ -113,10 +122,9 @@ alert("تم نسخ رابط الموقع 👍");
 
 }
 
+// العودة للصفحة الرئيسية
 function goHome(){
-
 window.location.href="index.html";
-
 }
 
 </script>
