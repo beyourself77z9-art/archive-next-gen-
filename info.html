@@ -5,11 +5,6 @@
 <meta charset="UTF-8">
 <title>أرشيف الجيل القادم</title>
 
-<meta name="title" content="أرشيف الجيل القادم">
-<meta name="description" content="مشروع ثقافي لتوثيق أفكار الجيل القادم حول مستقبل الثقافة في السعودية">
-<meta name="keywords" content="أرشيف الجيل القادم, الثقافة, الجيل القادم, السعودية, مستقبل الثقافة">
-<meta name="author" content="Archive Next Generation">
-<meta name="robots" content="index, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -28,18 +23,18 @@ align-items:center;
 }
 
 .container{
-background:rgba(255,255,255,0.9);
+background:rgba(255,255,255,0.95);
 padding:40px;
 border-radius:20px;
 width:90%;
 max-width:600px;
-box-shadow:0 0 20px rgba(0,0,0,0.2);
+box-shadow:0 0 20px rgba(0,0,0,0.25);
 }
 
 input{
 width:100%;
 padding:12px;
-margin-top:8px;
+margin-top:10px;
 border-radius:8px;
 border:1px solid #ccc;
 box-sizing:border-box;
@@ -75,31 +70,35 @@ width:100%;
 
 <p>المدينة</p>
 <input id="city">
-  
-  <p>رقم الجوال</p>
+
+<p>رقم الجوال</p>
 <input id="phone" type="tel" placeholder="05XXXXXXXX">
 
 <button onclick="saveData()">التالي</button>
 
 </div>
 
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
 
+/* إعداد Firebase */
+
 const firebaseConfig = {
-apiKey: "AIzaSyDIbGhX_vXkQJxDC4zaXvKkPs-10",
-authDomain: "archive-next-gen.firebaseapp.com",
+apiKey: "AIzaSyDIbGhX_vBiSSUfhXM2oxXkXpVs-10",
+authDomain: "archive-next-generation.firebaseapp.com",
 projectId: "archive-next-gen",
-storageBucket: "archive-next-gen.firebasestorage.app",
+storageBucket: "archive-next-gen.firebasestorage.firebasestorage.app",
 messagingSenderId: "973345848752",
 appId: "1:973345848752:web:02a6bc4cef2c14e415ea75"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
+/* حفظ البيانات */
 
 function saveData(){
 
@@ -113,7 +112,16 @@ alert("الرجاء تعبئة المعلومات");
 return;
 }
 
+/* إنشاء userID */
+
 let userID = localStorage.getItem("userID");
+
+if(!userID){
+userID = Date.now().toString();
+localStorage.setItem("userID",userID);
+}
+
+/* حفظ البيانات في Firebase */
 
 db.collection("archive_participants")
 .doc(userID)
@@ -126,16 +134,11 @@ answers:[],
 time:new Date().toISOString()
 },{merge:true})
 .then(()=>{
+alert("تم الحفظ بنجاح");
 window.location.href="questions.html";
 })
 .catch(()=>{
 alert("حدث خطأ أثناء الحفظ");
-});
-
-}
-
-window.location.href="questions.html";
-
 });
 
 }
