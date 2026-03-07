@@ -109,7 +109,7 @@ let city=document.getElementById("city").value.trim();
 let phone=document.getElementById("phone").value.trim();
 
 if(!name || !age || !city){
-alert("الرجاء تعبئة المعلومات الأساسية");
+alert("الرجاء تعبئة المعلومات");
 return;
 }
 
@@ -127,6 +127,9 @@ time:new Date().toISOString()
 },{merge:true})
 .then(()=>{
 window.location.href="questions.html";
+})
+.catch(()=>{
+alert("حدث خطأ أثناء الحفظ");
 });
 
 }
