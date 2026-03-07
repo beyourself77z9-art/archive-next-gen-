@@ -75,6 +75,9 @@ width:100%;
 
 <p>المدينة</p>
 <input id="city">
+  
+  <p>رقم الجوال</p>
+<input id="phone" type="tel" placeholder="05XXXXXXXX">
 
 <button onclick="saveData()">التالي</button>
 
@@ -103,9 +106,10 @@ function saveData(){
 let name=document.getElementById("name").value.trim();
 let age=document.getElementById("age").value.trim();
 let city=document.getElementById("city").value.trim();
+let phone=document.getElementById("phone").value.trim();
 
 if(!name || !age || !city){
-alert("الرجاء تعبئة جميع المعلومات");
+alert("الرجاء تعبئة المعلومات الأساسية");
 return;
 }
 
@@ -117,9 +121,15 @@ db.collection("archive_participants")
 name:name,
 age:age,
 city:city,
+phone:phone,
 answers:[],
 time:new Date().toISOString()
-}).then(()=>{
+},{merge:true})
+.then(()=>{
+window.location.href="questions.html";
+});
+
+}
 
 window.location.href="questions.html";
 
